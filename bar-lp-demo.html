@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAR NOCTURN | 夜の静寂に、一杯を。</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1612;
+    --gold: #c9a96e;
+    --gold-light: #e8d5aa;
+    --cream: #f5f0e8;
+    --muted: #8a7f70;
+    --bg: #0e0b08;
+    --bg2: #171210;
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'Noto Sans JP', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(14,11,8,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,169,110,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 60% at 30% 40%, rgba(201,169,110,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: 0.05em;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+  .hero-divider {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 3rem auto;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+  .hero-sub {
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+  .hero-cta {
+    margin-top: 3.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 1.1s forwards;
+  }
+  .btn {
+    display: inline-block;
+    padding: 1rem 3rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    transition: all 0.4s;
+    background: transparent;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  /* CONCEPT */
+  .concept {
+    padding: 10rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.6em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+  .concept-text {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--cream);
+  }
+  .concept-text em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .concept-body {
+    margin-top: 2.5rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 2;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* MENU */
+  .menu {
+    padding: 8rem 2rem;
+    background: var(--bg2);
+  }
+  .menu-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .menu-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  .menu-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-top: 1rem;
+  }
+  .menu-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 3rem 0 4rem;
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    border-bottom: 1px solid transparent;
+    margin-bottom: -1px;
+    font-family: var(--sans);
+  }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: rgba(201,169,110,0.1);
+  }
+  .menu-item {
+    background: var(--bg2);
+    padding: 2.5rem;
+    display: none;
+  }
+  .menu-item.visible { display: block; }
+  .menu-item-name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+  .menu-item-name em { font-style: italic; color: var(--gold-light); font-size: 0.9em; }
+  .menu-item-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+  .menu-item-price {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  /* ACCESS */
+  .access {
+    padding: 8rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .access-info h2 {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin: 1rem 0 2.5rem;
+  }
+  .access-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+  }
+  .access-label {
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    min-width: 60px;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    padding-top: 0.15rem;
+  }
+  .access-val { color: var(--muted); line-height: 1.9; }
+  .map-placeholder {
+    aspect-ratio: 1;
+    background: var(--bg2);
+    border: 1px solid rgba(201,169,110,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,169,110,0.06) 0%, transparent 70%);
+  }
+  .map-cross {
+    width: 1px; height: 100%;
+    background: rgba(201,169,110,0.15);
+    position: absolute;
+    left: 50%;
+  }
+  .map-cross-h {
+    width: 100%; height: 1px;
+    background: rgba(201,169,110,0.15);
+    position: absolute;
+    top: 50%;
+  }
+  .map-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    position: absolute;
+    box-shadow: 0 0 20px rgba(201,169,110,0.6);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(201,169,110,0.12);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+  }
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .access {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">NOCTURN</a>
+  <ul class="nav-links">
+    <li><a href="#concept">Concept</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#access">Access</a></li>
+    <li><a href="#access" class="btn" style="padding:0.5rem 1.5rem;font-size:0.65rem;">Reserve</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Osaka — Since 2019</p>
+  <h1 class="hero-title">
+    BAR<br>
+    <em>Nocturn</em>
+  </h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">夜の静寂に、一杯を。</p>
+  <div class="hero-cta">
+    <a href="#concept" class="btn">Enter</a>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section class="concept" id="concept">
+  <p class="section-label reveal">— Concept —</p>
+  <p class="concept-text reveal">
+    喧騒の街から一歩踏み込んだ先に広がる、<em>静かな夜の時間。</em>
+  </p>
+  <p class="concept-body reveal">
+    NOCTURNは、日常からの静かな逃避を提供するバーです。
+    厳選されたスピリッツと、バーテンダーが一杯一杯に込める
+    静謐なクラフトマンシップ。喧騒を忘れ、ただ杯を傾ける時間を。
+  </p>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <div class="menu-inner">
+    <div class="menu-header reveal">
+      <p class="section-label">— Signature —</p>
+      <h2 class="menu-title">Cocktails</h2>
+    </div>
+    <div class="menu-tabs reveal">
+      <button class="tab-btn active" data-tab="signature">Signature</button>
+      <button class="tab-btn" data-tab="classic">Classic</button>
+      <button class="tab-btn" data-tab="whisky">Whisky</button>
+    </div>
+    <div class="menu-grid reveal">
+      <!-- Signature -->
+      <div class="menu-item visible" data-cat="signature">
+        <div class="menu-item-name">Midnight Fog <em>/ ミッドナイトフォグ</em></div>
+        <p class="menu-item-desc">アールグレイウォッカ、ベルガモットリキュール、卵白。霧のような軽やかなフォームが夜の空気を閉じ込める。</p>
+        <span class="menu-item-price">¥ 1,600</span>
+      </div>
+      <div class="menu-item visible" data-cat="signature">
+        <div class="menu-item-name">Ember &amp; Ash <em>/ エンバー＆アッシュ</em></div>
+        <p class="menu-item-desc">スモーキーバーボン、メープルシロップ、オレンジビター。燻した木の香りが夜の奥行きを演出する。</p>
+        <span class="menu-item-price">¥ 1,800</span>
+      </div>
+      <div class="menu-item visible" data-cat="signature">
+        <div class="menu-item-name">Silent Garden <em>/ サイレントガーデン</em></div>
+        <p class="menu-item-desc">きゅうりジン、エルダーフラワー、ライムジュース。静寂の庭に咲く花のような、透明で清潔な一杯。</p>
+        <span class="menu-item-price">¥ 1,500</span>
+      </div>
+      <div class="menu-item visible" data-cat="signature">
+        <div class="menu-item-name">Velvet Noir <em>/ ベルベットノワール</em></div>
+        <p class="menu-item-desc">カシスリキュール、赤ワイン、ブラックペッパー。深みある果実と秘かなスパイスが余韻を残す。</p>
+        <span class="menu-item-price">¥ 1,700</span>
+      </div>
+      <!-- Classic -->
+      <div class="menu-item" data-cat="classic">
+        <div class="menu-item-name">Negroni</div>
+        <p class="menu-item-desc">カンパリ、スウィートベルモット、ジン。苦みと甘みの古典的な均衡。</p>
+        <span class="menu-item-price">¥ 1,400</span>
+      </div>
+      <div class="menu-item" data-cat="classic">
+        <div class="menu-item-name">Old Fashioned</div>
+        <p class="menu-item-desc">バーボン、アンゴスチュラビター、角砂糖。すべての起源に立ち返る一杯。</p>
+        <span class="menu-item-price">¥ 1,600</span>
+      </div>
+      <div class="menu-item" data-cat="classic">
+        <div class="menu-item-name">Martini</div>
+        <p class="menu-item-desc">ジン、ドライベルモット。完全な乾燥と冷たさの中に宿るエレガンス。</p>
+        <span class="menu-item-price">¥ 1,500</span>
+      </div>
+      <div class="menu-item" data-cat="classic">
+        <div class="menu-item-name">Manhattan</div>
+        <p class="menu-item-desc">ライウイスキー、スウィートベルモット、ビター。夜の街を想起させる都会的な深み。</p>
+        <span class="menu-item-price">¥ 1,600</span>
+      </div>
+      <!-- Whisky -->
+      <div class="menu-item" data-cat="whisky">
+        <div class="menu-item-name">Yamazaki 12yr</div>
+        <p class="menu-item-desc">山崎蒸溜所の12年熟成。ミズナラ樽由来の甘く繊細な香り。ストレートで。</p>
+        <span class="menu-item-price">¥ 2,200</span>
+      </div>
+      <div class="menu-item" data-cat="whisky">
+        <div class="menu-item-name">Bowmore 15yr</div>
+        <p class="menu-item-desc">アイラモルトの雄。潮の香りとピートが絡み合う、深海のような余韻。</p>
+        <span class="menu-item-price">¥ 1,900</span>
+      </div>
+      <div class="menu-item" data-cat="whisky">
+        <div class="menu-item-name">Hakushu 18yr</div>
+        <p class="menu-item-desc">白州の深い森と清流を感じさせる、緑豊かなハイボールで。</p>
+        <span class="menu-item-price">¥ 3,500</span>
+      </div>
+      <div class="menu-item" data-cat="whisky">
+        <div class="menu-item-name">Glenfarclas 105</div>
+        <p class="menu-item-desc">カスクストレングス60%。力強くも複雑な果実とシェリーの重奏。</p>
+        <span class="menu-item-price">¥ 2,000</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="access" id="access">
+  <div class="access-info reveal">
+    <p class="section-label">— Access —</p>
+    <h2>Find Us</h2>
+    <div class="access-row">
+      <span class="access-label">Address</span>
+      <span class="access-val">大阪府大阪市中央区西心斎橋 2-X-X<br>〇〇ビル B1F</span>
+    </div>
+    <div class="access-row">
+      <span class="access-label">Hours</span>
+      <span class="access-val">月〜土　20:00 — 翌3:00<br>日・祝　定休日</span>
+    </div>
+    <div class="access-row">
+      <span class="access-label">Access</span>
+      <span class="access-val">地下鉄 心斎橋駅 7番出口より徒歩3分</span>
+    </div>
+    <div class="access-row">
+      <span class="access-label">Tel</span>
+      <span class="access-val">06-XXXX-XXXX</span>
+    </div>
+    <div style="margin-top:2.5rem;">
+      <a href="#" class="btn">Reserve a Table</a>
+    </div>
+  </div>
+  <div class="map-placeholder reveal">
+    <div class="map-cross"></div>
+    <div class="map-cross-h"></div>
+    <div class="map-dot"></div>
+    <span style="position:relative;z-index:1;">MAP</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">NOCTURN</span>
+  <span>© 2024 Bar Nocturn. All rights reserved.</span>
+  <span>Osaka, Japan</span>
+</footer>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  const items = document.querySelectorAll('.menu-item');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const cat = tab.dataset.tab;
+      items.forEach(item => {
+        item.classList.toggle('visible', item.dataset.cat === cat);
+      });
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
